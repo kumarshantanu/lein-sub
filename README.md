@@ -27,6 +27,13 @@ Execute the plugin as follows:
     $ lein deps && lein test  # get deps from remote and local Maven repos and run tests
 
 
+## Getting in touch
+
+On Twitter: [@kumarshantanu](http://twitter.com/kumarshantanu)
+
+On Leiningen mailing list: [http://groups.google.com/group/leiningen](http://groups.google.com/group/leiningen)
+
+
 ## License
 
 Copyright (C) 2011 Shantanu Kumar
