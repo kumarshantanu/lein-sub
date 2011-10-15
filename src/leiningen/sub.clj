@@ -19,6 +19,7 @@
 
 Note: Each sub-project directory should have its own project.clj file")
     (reduce (fn [a b]
-              (let [c (if (= 0 b) nil b)]
-                (or a c)))
+              (let [a (if (= 0 a) nil a)
+                    b (if (= 0 b) nil b)]
+                (or a b)))
             (map run-sub-proj (:sub project)))))
