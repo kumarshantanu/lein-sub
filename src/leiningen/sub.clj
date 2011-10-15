@@ -18,5 +18,7 @@
       :sub [\"modules/dep1\" \"modules/proj-common\"]
 
 Note: Each sub-project directory should have its own project.clj file")
-    (reduce or
+    (reduce (fn [a b]
+              (let [c (if (= 0 b) nil b)]
+                (or a c)))
             (map run-sub-proj (:sub project)))))
