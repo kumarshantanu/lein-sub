@@ -2,6 +2,13 @@
   (:use [leiningen.core :only [apply-task read-project task-not-found]]))
 
 
+(defn run-sub-proj
+  [sub-proj-dir]
+  (println "Reading project from " sub-proj-dir)
+  (let [sub-project (read-project (str sub-proj-dir "/project.clj"))]
+    (apply-task task-name sub-project args task-not-found)))
+
+
 (defn sub
   "Run task for all subprojects"
   [project task-name & args]
@@ -11,7 +18,5 @@
       :sub [\"modules/dep1\" \"modules/proj-common\"]
 
 Note: Each sub-project directory should have its own project.clj file")
-    (doseq [sub-proj-dir (:sub project)]
-      (println "Reading project from " sub-proj-dir)
-      (let [sub-project (read-project (str sub-proj-dir "/project.clj"))]
-        (apply-task task-name sub-project args task-not-found)))))
+    (reduce or
+            (map run-sub-proj (:sub project)))))
