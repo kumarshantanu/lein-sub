@@ -5,7 +5,7 @@
 
 (defn run-sub-proj
   [sub-proj-dir task-name args]
-  (println "Reading project from " sub-proj-dir)
+  (println "Reading project from" sub-proj-dir)
   (let [sub-project (read-project (str sub-proj-dir "/project.clj"))]
     (apply-task task-name sub-project args task-not-found)))
 
