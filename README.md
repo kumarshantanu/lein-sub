@@ -7,11 +7,11 @@ Leiningen plugin to execute tasks on sub-projects
 
 Either install as a plugin:
 
-    $ lein plugin install lein-sub "0.1"
+    $ lein plugin install lein-sub "0.1.1"
 
 Or, include as a dev-dependency:
 
-    :dev-dependencies [lein-sub "0.1"]
+    :dev-dependencies [lein-sub "0.1.1"]
 
 Your project may have sub-projects (each having its own project.clj file) - you can specify them as follows:
 

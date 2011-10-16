@@ -1,3 +1,3 @@
-(defproject lein-sub "0.1.1-SNAPSHOT"
+(defproject lein-sub "0.1.1"
   :description "Leiningen Subprojects plugin"
   :dev-dependencies [[org.clojure/clojure "1.2.1"]])
