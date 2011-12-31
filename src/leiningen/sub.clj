@@ -23,6 +23,7 @@ Note: Each sub-project directory should have its own project.clj file")
                               (let [a (if (= 0 a) nil a)
                                     b (if (= 0 b) nil b)]
                                 (or a b)))
-                            (map #(run-sub-proj % task-name args)
+                            (map #(let [r (run-sub-proj % task-name args)]
+                                    (if (and (integer? r) (pos? r)) r 0))
                                  (:sub project)))]
       (exit code))))
