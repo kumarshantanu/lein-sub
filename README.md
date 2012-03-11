@@ -3,15 +3,30 @@
 Leiningen plugin to execute tasks on sub-projects
 
 
-## Usage
+## Installation
+
+### Lein 2 users
+
+Either install as a plugin:
+
+    $ lein2 plugin install lein-sub "0.2.0"
+
+Or, specify as a plugin in `project.clj`:
+
+    :plugins [[lein-sub "0.2.0"]]
+
+### Leiningen 1.x users
 
 Either install as a plugin:
 
     $ lein plugin install lein-sub "0.1.2"
 
-Or, include as a dev-dependency:
+Or, include as a dev-dependency in `project.clj`:
 
-    :dev-dependencies [lein-sub "0.1.2"]
+    :dev-dependencies [[lein-sub "0.1.2"]]
+
+
+## Usage
 
 Your project may have sub-projects (each having its own project.clj file) - you can specify them as follows:
 
@@ -36,7 +51,7 @@ On Leiningen mailing list: [http://groups.google.com/group/leiningen](http://gro
 
 ## License
 
-Copyright (C) 2011-2012 Shantanu Kumar
+Copyright (C) 2011-2012 Shantanu Kumar, Phil Hagelberg
 
 Adapted from Phil Hagelberg's example: http://j.mp/oC9TTo
 
