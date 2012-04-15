@@ -7,9 +7,9 @@ Leiningen plugin to execute tasks on sub-projects
 
 ### Lein 2 users
 
-Either install as a plugin:
+Either install as a plugin in `~/.lein/profiles.clj`:
 
-    $ lein2 plugin install lein-sub "0.2.0"
+    {:user {:plugins [[lein-sub "0.2.0"]]}}
 
 Or, specify as a plugin in `project.clj`:
 
