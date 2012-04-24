@@ -8,9 +8,9 @@
   [sub-proj-dir task-name args]
   (println "Reading project from" sub-proj-dir)
   (let [sub-project (project/read (str sub-proj-dir "/project.clj"))
-        nested-subprojects (:sub sub-project)]
-    (if nested-subprojects
-      (apply sub sub-project task-name args)
+        nested-subprojects (map #(str sub-proj-dir "/" %1) (:sub sub-project))]
+    (if-not (empty? nested-subprojects)
+      (apply sub (assoc sub-project :sub nested-subprojects) task-name args)
       (main/apply-task task-name sub-project args))))
 
 (defn run-subproject [task-name args total-result sub]
