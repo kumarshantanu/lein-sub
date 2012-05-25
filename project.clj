@@ -1,4 +1,4 @@
-(defproject lein-sub "9.0.0-SNAPSHOT"
+(defproject lein-sub "0.3.0"
   :description "Leiningen Subprojects plugin"
   :url "https://github.com/kumarshantanu/lein-sub"
   :eval-in-leiningen true)
