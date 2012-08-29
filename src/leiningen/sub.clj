@@ -2,11 +2,13 @@
   (:require [leiningen.core.main :as main]
             [leiningen.core.project :as project]))
 
+
 (defn apply-task-to-subproject
   [sub-proj-dir task-name args]
   (println "Reading project from" sub-proj-dir)
   (let [sub-project (project/read (str sub-proj-dir "/project.clj"))]
     (main/apply-task task-name sub-project args)))
+
 
 (defn run-subproject [task-name args total-result sub]
   (if (zero? total-result)
@@ -14,12 +16,14 @@
       (if (and (integer? result) (pos? result)) result 0))
     total-result))
 
+
 (defn sub
   "Run task for all subprojects"
   [project task-name & args]
   (if-let [subprojects (:sub project)]
-    (reduce (partial run-subproject task-name args)
-            0 (:sub project))
+    (->> subprojects
+      (reduce (partial run-subproject task-name args) 0)
+      main/exit)
     (println "No subprojects defined. Define with :sub key in project.clj, e.g.
 
       :sub [\"modules/dep1\" \"modules/proj-common\"]
