@@ -9,23 +9,17 @@
   (let [sub-project (project/read (str sub-proj-dir "/project.clj"))]
     (main/apply-task task-name sub-project args)))
 
-
-(defn run-subproject [task-name args total-result sub]
-  (if (zero? total-result)
-    (let [result (apply-task-to-subproject sub task-name args)]
-      (if (and (integer? result) (pos? result)) result 0))
-    total-result))
-
-
 (defn sub
   "Run task for all subprojects"
   [project task-name & args]
-  (if-let [subprojects (:sub project)]
-    (->> subprojects
-      (reduce (partial run-subproject task-name args) 0)
-      main/exit)
-    (println "No subprojects defined. Define with :sub key in project.clj, e.g.
+  (if-let [subprojects (seq (:sub project))]
+    (doseq [sub subprojects]
+      (apply-task-to-subproject sub task-name args))
+    (throw
+     (ex-info
+      "No subprojects defined. Define with :sub key in project.clj, e.g.
 
       :sub [\"modules/dep1\" \"modules/proj-common\"]
 
-Note: Each sub-project directory should have its own project.clj file")))
+Note: Each sub-project directory should have its own project.clj file"
+      {:exit-code 1}))))
