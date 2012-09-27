@@ -6,7 +6,8 @@
 (defn apply-task-to-subproject
   [sub-proj-dir task-name args]
   (println "Reading project from" sub-proj-dir)
-  (let [sub-project (project/read (str sub-proj-dir "/project.clj"))]
+  (let [sub-project (project/init-project
+                     (project/read (str sub-proj-dir "/project.clj")))]
     (main/apply-task task-name sub-project args)))
 
 (defn sub
