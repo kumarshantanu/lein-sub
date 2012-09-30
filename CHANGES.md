@@ -1,6 +1,6 @@
 # Changes and TODO
 
-## 2012-Oct-?? / 0.2.3
+## 2012-Sep-30 / 0.2.3
 
 * Init sub-projects, so their plugins are applied (Hugo Duncan)
 
