@@ -9,11 +9,11 @@ Leiningen plugin to execute tasks on sub-projects
 
 Either install as a plugin in `~/.lein/profiles.clj`:
 
-    {:user {:plugins [[lein-sub "0.2.3"]]}}
+    {:user {:plugins [[lein-sub "0.2.4"]]}}
 
 Or, specify as a plugin in `project.clj`:
 
-    :plugins [[lein-sub "0.2.3"]]
+    :plugins [[lein-sub "0.2.4"]]
 
 ### Leiningen 1.x users
 
@@ -56,6 +56,7 @@ On Leiningen mailing list: [http://groups.google.com/group/leiningen](http://gro
 * Shantanu Kumar **(Author)** (https://github.com/kumarshantanu)
 * Phil Hagelberg (https://github.com/technomancy)
 * Hugo Duncan (https://github.com/hugoduncan)
+* Creighton Kirkendall (https://github.com/ckirkendall)
 
 
 ## License
