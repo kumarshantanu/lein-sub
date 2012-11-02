@@ -7,8 +7,9 @@
   [sub-proj-dir task-name args]
   (println "Reading project from" sub-proj-dir)
   (let [sub-project (project/init-project
-                     (project/read (str sub-proj-dir "/project.clj")))]
-    (main/apply-task task-name sub-project args)))
+                     (project/read (str sub-proj-dir "/project.clj")))
+        new-task-name (main/lookup-alias task-name sub-project)]
+    (main/apply-task new-task-name sub-project args)))
 
 (defn sub
   "Run task for all subprojects"
