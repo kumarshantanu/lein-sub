@@ -1,5 +1,9 @@
 # Changes and TODO
 
+## 2012-Nov-03 / 0.2.4
+
+* Add support for resolving aliases in project.clj (Creighton Kirkendall)
+
 ## 2012-Sep-30 / 0.2.3
 
 * Init sub-projects, so their plugins are applied (Hugo Duncan)
