@@ -2,6 +2,9 @@
 
 Leiningen plugin to execute tasks on sub-projects
 
+Should you need recursive behavior, consider Leiningen profiles or
+[lein-cascade](https://github.com/kumarshantanu/lein-cascade).
+
 
 ## Installation
 
@@ -9,11 +12,11 @@ Leiningen plugin to execute tasks on sub-projects
 
 Either install as a plugin in `~/.lein/profiles.clj`:
 
-    {:user {:plugins [[lein-sub "0.2.4"]]}}
+    {:user {:plugins [[lein-sub "0.3.0"]]}}
 
 Or, specify as a plugin in `project.clj`:
 
-    :plugins [[lein-sub "0.2.4"]]
+    :plugins [[lein-sub "0.3.0"]]
 
 ### Leiningen 1.x users
 
@@ -28,18 +31,27 @@ Or, include as a dev-dependency in `project.clj`:
 
 ## Usage
 
-Your project may have sub-projects (each having its own project.clj file) - you can specify them as follows:
+Your project may have sub-projects (each having its own project.clj file) -
+you can specify them as follows:
 
-    :sub ["module/foo-common" "module/dep-vendor-xyz"]
+```clojure
+:sub ["module/foo-common" "module/dep-vendor-xyz"]
+```
 
-Execute the plugin as follows:
+Execute the plugin:
 
-    $ lein sub deps   # runs "lein deps" on each of 'foo-common' and 'dep-vendor-xyz'
+```bash
+$ lein sub deps   # runs "lein deps" on each of 'foo-common' and 'dep-vendor-xyz'
 
-    $ lein sub jar      # runs "lein jar" on both
-    $ lein sub install  # install both sub-project artifacts to local Maven repo
-    $ lein clean; rm -rf lib  # clean current dependency JARs
-    $ lein deps && lein test  # get deps from remote and local Maven repos and run tests
+$ lein sub jar      # runs "lein jar" on both
+$ lein sub install  # install both sub-project artifacts to local Maven repo
+```
+
+You can pass subproject directory locations via command line (overrides `:sub`):
+
+```bash
+$ lein sub -s "module/foo-common:module/dep-vendor-xyz" jar
+```
 
 
 ## Getting in touch
@@ -61,7 +73,7 @@ On Leiningen mailing list: [http://groups.google.com/group/leiningen](http://gro
 
 ## License
 
-Copyright (C) 2011-2012 Shantanu Kumar and contributors
+Copyright © 2011-2013 Shantanu Kumar and contributors
 
 Adapted from Phil Hagelberg's example: http://j.mp/oC9TTo
 
