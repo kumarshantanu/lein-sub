@@ -2,7 +2,7 @@
 
 Leiningen plugin to execute tasks on sub-projects
 
-Should you need recursive behavior, consider Leiningen profiles or
+Should you need recursive behavior, consider Leiningen aliases or
 [lein-cascade](https://github.com/kumarshantanu/lein-cascade).
 
 
