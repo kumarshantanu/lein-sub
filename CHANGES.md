@@ -1,5 +1,9 @@
 # Changes and TODO
 
+## 2013-Sep-22 / 0.3.0
+
+* Add `-s <subprojects>` option support (Shantanu Kumar)
+
 ## 2012-Nov-03 / 0.2.4
 
 * Add support for resolving aliases in project.clj (Creighton Kirkendall)
