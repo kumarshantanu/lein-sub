@@ -1,4 +1,4 @@
-(defproject lein-sub "0.3.0"
+(defproject lein-sub "0.3.1"
   :description "Leiningen Subprojects plugin"
   :url "https://github.com/kumarshantanu/lein-sub"
   :license {:name "Eclipse Public License"
