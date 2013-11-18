@@ -4,5 +4,5 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]]
-  :plugins [[lein-sub "0.3.0"]]
-  :sub ["child" "child2"])
+  :plugins [[lein-sub "0.3.1"]]
+  :sub ["common-child" "child" "child2" "child3"])

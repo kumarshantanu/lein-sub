@@ -53,6 +53,12 @@ You can pass subproject directory locations via command line (overrides `:sub`):
 $ lein sub -s "module/foo-common:module/dep-vendor-xyz" jar
 ```
 
+You can force dependency discovery between sub-projects (overrides build order specified in the `:sub` vector):
+
+```bash
+$ lein sub clean -d
+```
+
 
 ## Getting in touch
 
