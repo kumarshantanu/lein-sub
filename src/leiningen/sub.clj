@@ -12,6 +12,11 @@
   (let [new-task-name (main/lookup-alias task-name sub-project)]
     (main/apply-task new-task-name sub-project args)))
 
+(defn apply-task-to-subproject-dir
+  [sub-project-dir task-name args]
+  (let [ sub-project (project/init-project (project/read (str sub-project-dir "/project.clj")))]
+    (apply-task-to-subproject sub-project task-name args)))
+
 (defn read-all-subprojects
   [sub-proj-dirs]
   (map #(project/init-project (project/read (str % "/project.clj"))) sub-proj-dirs))
@@ -78,4 +83,11 @@ Note: Each sub-project directory should have its own project.clj file")))
   "Run task for all subprojects"
   [project task-name & args]
   (let [[subprojects task-name args] (resolve-subprojects project task-name args)]
-    (perform-in-order (enriched-projects (read-all-subprojects subprojects)) task-name args)))
+    (cond
+      ;; -d would trigger "discovery mode" build order
+      (= "-d" (first args))
+      (perform-in-order (enriched-projects (read-all-subprojects subprojects)) task-name (rest args))
+      ;; the normal way will follow artifacts order in the build script
+      :else
+      (doseq [each subprojects]
+        (apply-task-to-subproject-dir each task-name args)))))
