@@ -52,7 +52,6 @@ Starting in 0.4.0, lein-sub will automatically determine the
 correct execution order for the sub-projects based on
 inter-project dependencies.
 
-
 Alternately, you may pass sub-project directories via the command line, using the
 `--submodules` (or `-s`) option:
 
@@ -66,6 +65,15 @@ When `--submodules` is not specified, your top-level project *must*
 have a :sub key.
 When `--submodules` *is* specified, the :sub key is ignored.
 
+## Build Continuation
+
+It can be annoying to get part way through a large build only to hit
+a minor failure in a particular module, and have to start over, even when
+it's just a matter of a tiny typo.
+
+The `--resume` (or `-r`) option instructs lein-sub to pick up where it left
+off.
+
 ## Notes
 
 lein-sub will create a file, `target/sub-cache.edn`, to store
@@ -75,6 +83,9 @@ This cache file will be recreated if deleted, or any time
 any `project.clj` file is changed.
 Even on a large project (over 40 modules), it takes less than a second
 to rebuild.
+
+It also creates a `target/sub-state.edn` file, to store what module it
+is currently building.
 
 ## Getting in touch
 

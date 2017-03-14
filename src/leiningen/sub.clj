@@ -11,6 +11,15 @@
 
 (def ^:private cache-path "target/sub-cache.edn")
 
+(def ^:private state-path "target/sub-state.edn")
+
+(defn ^:private write-edn
+  [path content]
+  (io/make-parents path)
+
+  (with-open [s (-> path io/file io/writer)]
+    (pprint/write content :stream s)))
+
 (defn ^:private to-message
   [^Throwable throwable]
   (or (.getMessage throwable)
@@ -163,12 +172,26 @@
                           (count subs-ordered)
                           (count sub-module-paths))))
 
-    (io/make-parents cache-path)
-
-    (with-open [s (io/writer (io/file cache-path))]
-      (pprint/write cache-data :stream s))
+    (write-edn cache-path cache-data)
 
     cache-data))
+
+(defn ^:private read-edn
+  [path]
+  (let [f (io/file path)]
+    (if-not (.exists f)
+      nil
+      (try
+        (main/debug (format "Reading from `%s'." path))
+
+        (with-open [reader (io/reader f)
+                    pushback-reader (PushbackReader. reader)]
+          (edn/read pushback-reader))
+        (catch Throwable t
+          (main/warn (format "Unable to read from `%s': %s"
+                             path
+                             (to-message t)))
+          nil)))))
 
 (defn ^:private read-cache-file
   "Reads the project database cache, if present.
@@ -177,29 +200,9 @@
 
   Returns nil otherwise."
   []
-  (let [^File cache-file (io/file cache-path)]
-
-    (if (not (.exists cache-file))
-      nil
-      (let [project-data
-            (try
-              (main/debug (format "Reading from `%s'." cache-path))
-
-              (with-open [reader (io/reader cache-file)
-                          pushback-reader (PushbackReader. reader)]
-                (edn/read pushback-reader))
-              (catch Throwable t
-                (main/warn (format "Unable to read from `%s': %s"
-                                   cache-file
-                                   (to-message t)))
-                nil))]
-        (cond
-
-          (nil? project-data)
-          nil
-
-          (cache-is-valid? project-data)
-          project-data)))))
+  (when-let [project-data (read-edn cache-path)]
+    (when (cache-is-valid? project-data)
+      project-data)))
 
 (defn read-project-data
   "Gets the project data, starting from the root project.
@@ -214,6 +217,7 @@
 (defn ^:private apply-task-to-subproject
   [sub-proj-dir task-name args]
   (main/info "Reading project from" sub-proj-dir)
+  (write-edn state-path {:last-module sub-proj-dir})
   (let [sub-project (project/init-project
                      (project/read (str sub-proj-dir "/project.clj")))
         new-task-name (main/lookup-alias task-name sub-project)]
@@ -221,12 +225,24 @@
 
 (def ^:private cli-options
   [["-s" "--submodules LIST" "Execute task in just the indicated projects (colon separated list)."]
+   ["-r" "--resume" "Resume execution at last failure."]
    ["-h" "--help" "This usage summary."]])
+
+(defn ^:private apply-resume
+  [sub-modules]
+  (let [result (when-let [last-module (:last-module (read-edn state-path))]
+                 (drop-while #(not= % last-module) sub-modules))]
+    (if (seq result)
+      result
+      (do
+        (main/warn "Unable to resume execution")
+        sub-modules))))
 
 (defn ^:private resolve-arguments
   "Parse `args` and return [sub-projects task-name args]"
   [project args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-options)
+        {:keys [help subprojects resume]} options
         [task-name & task-arguments] arguments
         usage (fn [errors]
                 (println "lein sub [options] task-name [arguments]")
@@ -239,8 +255,7 @@
                 nil)]
     (cond
 
-      (or (:help options)
-          errors)
+      (or help errors)
       (usage errors)
 
       (nil? task-name)
@@ -248,9 +263,8 @@
 
       ;; For explicitly named subprojects, we expect the user to supply
       ;; valid names and execution order
-      (:subprojects options)
-      [(->> #"(?<!\\):"
-            (str/split (:subprojects options))
+      subprojects
+      [(->> (str/split subprojects #"(?<!\\):")
             (map #(str/replace % #"\\:" ":"))
             vec)
        task-name
@@ -260,7 +274,9 @@
       (seq (:sub project))
       [(-> project
            read-project-data
-           :build-order)
+           :build-order
+           (cond->
+             resume apply-resume))
        task-name
        task-arguments]
 
@@ -276,6 +292,7 @@ or specify subproject dirs via command line:
     $ lein sub -s \"modules/dep1:modules/proj-common\" <task-name> [args]
 
 Note: Each sub-project directory should have its own project.clj file")))))
+
 
 (defn sub
   "Run task for all subprojects in dependency order"
