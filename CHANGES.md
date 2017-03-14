@@ -1,5 +1,10 @@
 # Changes and TODO
 
+## UNRELEASED / 0.4.0
+
+lein-sub will now automatically determine the optimum execution order.
+
+
 ## 2013-Sep-22 / 0.3.0
 
 * Add `-s <subprojects>` option support (Shantanu Kumar)
