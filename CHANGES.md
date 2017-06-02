@@ -1,5 +1,14 @@
 # Changes and TODO
 
+## UNRELEASED / 0.4.0
+
+lein-sub will now automatically determine the optimum execution order.
+
+Sub-modules may be specified as `--submodules` or `-s`.
+Previously, only `-s` was supported.
+
+Builds are now resumable using the `--resume` (or `-r`).
+
 ## 2013-Sep-22 / 0.3.0
 
 * Add `-s <subprojects>` option support (Shantanu Kumar)
